@@ -71,8 +71,8 @@ The first visualization is a simple bar chart created to see how many observatio
 #Layering the original chart and the inference text chart<br>
    chart_with_inference = readings_locations | inference_chart chart_with_inference<br>
 <br>
-#1. Grouping the dataset by the 'measures' and calculating the associated mean 'value'.<br>
-#2. 2. Extracting top 5 measures.<br>
+1. #Grouping the dataset by the 'measures' and calculating the associated mean 'value'.<br>
+2. #Extracting top 5 measures.<br>
 # Calculate average values for each measure<br>
    average_values = data.groupby('measure')['value'].mean().reset_index()<br>
 # Sorting 'average values' in descending order<br>
@@ -85,20 +85,20 @@ The first visualization is a simple bar chart created to see how many observatio
 <br>
 <br>
 <br>
-Visualization of the mean 'value' of the top 5 measures: ['Total dissolved salts', 'Bicarbonates', 'Total hardness','Aluminium', 'Oxygen saturation']:<br>
-Pie chart: Mean 'value' for each of the top 5 measures<br>
+#Visualization of the mean 'value' of the top 5 measures: ['Total dissolved salts', 'Bicarbonates', 'Total hardness','Aluminium', 'Oxygen saturation']:<br>
+#Pie chart: Mean 'value' for each of the top 5 measures<br>
 # Create a pie chart using mark_arc with specified angles<br>
    pie_chart = alt.Chart(top_5_measures).mark_arc().encode( theta='value:O',color='measure:N',tooltip=['measure:N', 'value:Q'] ).properties(width=400,height=400,title="Top Five 
                Highest Chemicals (Pie Chart)")<br>
 # Show the chart<br>
    pie_chart<br>
 <br>
-Filtering the whole data set by storing the detials of the top 5 measures in another variable:<br>
+#Filtering the whole data set by storing the detials of the top 5 measures in another variable:<br>
    filtered_data_top5 = data[data['measure'].isin(top_5_measures_names)] <br>
    filtered_data_top5<br>
 <br>
-(i) MISSING DATA AND (ii) CHANGE IN COLLECTION FREQUENCY <br>
-a. Heatmap for the number of observations in each location for the whole dataset<br>
+#(i) MISSING DATA AND (ii) CHANGE IN COLLECTION FREQUENCY <br>
+a. #Heatmap for the number of observations in each location for the whole dataset<br>
 # Pivoting the data for creating a heatmap<br>
    pivoted_heatmap_data = data.pivot_table(values='value', index='location', columns='year', aggfunc='count')<br>
 # Create a heatmap with the whole dataset<br>
@@ -108,7 +108,7 @@ a. Heatmap for the number of observations in each location for the whole dataset
    plt.show()<br>
 <br>
 <br>
-b. Creating a heatmap for the filtered data with information for top 5 measures only to show gap in collection years<br>
+b. #Creating a heatmap for the filtered data with information for top 5 measures only to show gap in collection years<br>
 # Pivoting the data for creating a heatmap<br>
    heatmap_data2 = filtered_data_top5.pivot_table(values='value', index='location', columns='year', aggfunc='count')<br>
 # Creating a heatmap with the top five measures<br>
@@ -118,7 +118,7 @@ b. Creating a heatmap for the filtered data with information for top 5 measures 
    plt.show()<br>
 <br>
 <br>
-c. Data for Aluminium is missing for some of the locations<br>
+c. #Data for Aluminium is missing for some of the locations<br>
 # No data for measure = Aluminium in some locations<br>
    heatmap_data_aluminium = filtered_data_top5[filtered_data_top5['measure'] == 'Aluminium'].pivot_table(values='value', index='location', columns='year', aggfunc='count') <br>
 # Creating a heatmap with the top five measures<br>
@@ -129,39 +129,39 @@ c. Data for Aluminium is missing for some of the locations<br>
 <br>
 <br>
 <br>
-DUPLICATE/REPEATED VALUES<br>
-#Creating a scatter plot to visualize the repeated entries on the same date, taking just one case (at random): the year 2007, and only one measure: Total dissolved salts<br>
+#DUPLICATE/REPEATED VALUES<br>
+Creating a scatter plot to visualize the repeated entries on the same date, taking just one case (at random): the year 2007, and only one measure: Total dissolved salts<br>
    modified_data_rep=data[(data['year']==2007) & (data['measure']=='Total dissolved salts')] <br>
    rep_obs=alt.Chart(modified_data_rep).mark_point(size=200).encode(x='sample date:T',y='value:Q',color='location',tooltip= ['location','value:Q','sample date']).properties(width=900,height=128,title='Total dissolved salts:repeated observations on same date ').facet(row='location') <br>
    rep_obs<br>
 <br>
 <br>
 <br>
-ANOMALIES (Iron)<br>
-#Line trend (temporal) for the whole dataset<br>
-# Convert 'sample date' to DateTime format<br>
-# Line chart for mean values over the years for each measure<br>
+#ANOMALIES (Iron)<br>
+Line trend (temporal) for the whole dataset<br>
+Convert 'sample date' to DateTime format<br>
+Line chart for mean values over the years for each measure<br>
    line_chart = alt.Chart(data).mark_line(strokeWidth=7).encode( x='year(sample date):O',y='mean(value):Q',color=alt.Color('measure:N', legend=alt.Legend(title='Measure')), tooltip=['measure:N', 'year(sample date):O', 'mean(value):Q']).properties( width=600,height=300,title='Mean Value Trend Over Years' )<br>
    line_chart<br>
 <br>
-# Line chart for year-wise trend of 'Iron' by region<br>
+Line chart for year-wise trend of 'Iron' by region<br>
    iron_trend = alt.Chart(data[data['measure'] == 'Iron']).mark_line(strokeWidth=6).encode( x=alt.X('year:O', title='Year'),y=alt.Y('mean(value):Q', title='Mean Value'),color=alt.Color('location:N', legend=alt.Legend(title='Region')), tooltip=['location:N', 'year:O', 'mean(value):Q'],).properties( width=800,height=400,title='Anomaly: Iron' )<br>
    iron_trend<br>
 <br>
 <br>
 <br>
-TRENDS<br>
-#Creating the same chart with location as a filter to identify the temporal trends in each location # Create a selection dropdown for locations<br>
+#TRENDS<br>
+Creating the same chart with location as a filter to identify the temporal trends in each location # Create a selection dropdown for locations<br>
    location_dropdown = alt.selection_point(fields=['location'], bind=alt.binding_select(options=filtered_data_top5['location'].unique().tolist()), name='Select Location')<br>
-# Create the line chart with the location filter<br>
+Create the line chart with the location filter<br>
    top5_trend = alt.Chart(filtered_data_top5).mark_line(strokeWidth=5).encode( x='year:O',y='mean(value):Q',color='measure',tooltip=['measure', 'year:O', 'mean(value):Q']).properties(width=200, height=200).facet(column='measure').add_params( location_dropdown).transform_filter( location_dropdown)<br>
-# Display the chart<br>
+Display the chart<br>
    top5_trend<br>
 <br>
 <br>
 <br>
-OUTLIERS<br>
-#Checking normality od the dataset to identify which outlier method to use<br>
+#OUTLIERS<br>
+Checking normality od the dataset to identify which outlier method to use<br>
    plt.figure(figsize=(8, 3))<br>
    plt.subplot(1, 2, 1)<br>
    sns.histplot(data['value'], bins=20, kde=True, color='red') plt.title('Histogram')<br>
