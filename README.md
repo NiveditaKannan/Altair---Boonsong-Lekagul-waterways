@@ -71,8 +71,8 @@ The first visualization is a simple bar chart created to see how many observatio
 #Layering the original chart and the inference text chart<br>
    chart_with_inference = readings_locations | inference_chart chart_with_inference<br>
 <br>
-1. Grouping the dataset by the 'measures' and calculating the associated mean 'value'.<br>
-2. 2. Extracting top 5 measures.<br>
+#1. Grouping the dataset by the 'measures' and calculating the associated mean 'value'.<br>
+#2. 2. Extracting top 5 measures.<br>
 # Calculate average values for each measure<br>
    average_values = data.groupby('measure')['value'].mean().reset_index()<br>
 # Sorting 'average values' in descending order<br>
