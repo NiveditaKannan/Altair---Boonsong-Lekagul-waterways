@@ -1,9 +1,9 @@
-Importing required libraries and essential packages. 2. Reading the dataset.
-#Importing required packages and libraries
-   import pandas as pd
-   import altair as alt
-   import seaborn as sns
-   import matplotlib.pyplot as plt
+Importing required libraries and essential packages. 2. Reading the dataset.<br>
+#Importing required packages and libraries<br>
+   import pandas as pd<br>
+   import altair as alt<br>
+   import seaborn as sns<br>
+   import matplotlib.pyplot as plt<br>
 
 
 #Importing the dataset
